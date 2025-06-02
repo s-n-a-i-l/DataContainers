@@ -11,12 +11,22 @@ namespace ForwardList
 
 		public int Data {  get; set; }
 		public Element pNext {  get; set; }
+		public Element Prev { get; set; }
 
-		public Element (int Data,Element pNext = null) 
+		//public Element(int Data, Element pNext = null, Element Next = null) 
+		//{
+		//    this.Data = Data;
+		//	this.pNext = pNext;
+		//	this.Next = Next;
+		//	Console.WriteLine($"EConstructor:\t{GetHashCode()}");
+		//}
+		public Element (int Data,Element pNext = null, Element Prev = null) 
 		{
 		  this.Data = Data;
 		  this.pNext = pNext;
-		  Console.WriteLine($"EConstructor:\t{GetHashCode()}");
+			this.Prev = Prev;
+
+			Console.WriteLine($"EConstructor:\t{GetHashCode()}");
 		}
 
 		~Element ()

@@ -17,6 +17,7 @@ namespace ForwardList
 			Head = null;
 			Console.WriteLine($"LConstructor:\t{GetHashCode()}");
 		}
+		
 
 		~ForwardList() 
 		{
@@ -62,7 +63,7 @@ namespace ForwardList
 				return;
 			}
 		 //доходим до нужного эл-та
-		 Element Temp = Head;
+		      Element Temp = Head;
 			for (int i = 0; i < Index - 1; i++) 
 			{
 				Temp = Temp.pNext;
