@@ -1,23 +1,39 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ForwardList
 {
-	internal class ForwardList
+	internal class ForwardList : IEnumerable<int>
 	{
 
 		private Element Head {  get; set; }
 		public int Lenght { get; private set; }
+
+		public void Add(int data)
+		{
+			PushBack(data); // добавляет в конец при инициализации: {1, 2, 3}
+		}
+		public IEnumerator<int> GetEnumerator()
+		{
+			Element current = Head; 
+			while (current != null)
+			{
+				yield return current.Data;
+				current = current.pNext;
+			}
+		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		public ForwardList() 
 		{
 			Head = null;
 			Console.WriteLine($"LConstructor:\t{GetHashCode()}");
 		}
-		
 
 		~ForwardList() 
 		{
@@ -132,6 +148,8 @@ namespace ForwardList
 			Temp.pNext = null;
 			Lenght--;
 		}
+
+		
 
 	}
 }

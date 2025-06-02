@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Element.cs" />
     <Compile Include="ForwardList.cs" />
+    <Compile Include="List.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
