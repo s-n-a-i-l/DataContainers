@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BinaryTree
 {
-	internal class Program
+	internal class Program //решила продублировать все методы, сделав основные приватными, а те что мы можем вызвать соответственно - публичными
 	{
 		static void Main(string[] args)
 		{
@@ -17,31 +17,35 @@ namespace BinaryTree
 			Tree tree = new Tree();
 			for (int i = 0; i < n; i++) 
 			{
-			 tree.Insert(rand.Next(100),tree.Root);
+			 tree.Insert(rand.Next(100));
 			}
 
-			tree.Print(tree.Root);
+			tree.Erase(20);
+
+			tree.Print();
+
 			Console.WriteLine();
-			Console.WriteLine($"Минимальное значение: {tree.MinValue(tree.Root)}");
-			Console.WriteLine($"Максимальное значение: {tree.MaxValue(tree.Root)}");
-			Console.WriteLine($"Количество элементов дерева: {tree.Count(tree.Root)}");
-			Console.WriteLine($"Сумма элементов дерева: {tree.Sum(tree.Root)}");
+			Console.WriteLine($"Минимальное значение: {tree.MinValue()}");
+			Console.WriteLine($"Максимальное значение: {tree.MaxValue()}");
+			Console.WriteLine($"Количество элементов дерева: {tree.Count()}");
+			Console.WriteLine($"Сумма элементов дерева: {tree.Sum()}");
 
 			UniqueTree u_tree = new UniqueTree();
 			for (int i = 0; i < n; i++)
 			{
-				u_tree.Insert(rand.Next(100), u_tree.Root);
+				u_tree.Insert(rand.Next(100));
 				
 			}
 
-			tree.Print(u_tree.Root);
+			u_tree.Print();
 			Console.WriteLine();
-			Console.WriteLine($"Минимальное значение: {u_tree.MinValue(u_tree.Root)}");
-			Console.WriteLine($"Максимальное значение: {u_tree.MaxValue(u_tree.Root)}");
-			Console.WriteLine($"Количество элементов дерева: {u_tree.Count(u_tree.Root)}");
-			Console.WriteLine($"Сумма элементов дерева: {u_tree.Sum(u_tree.Root)}");
-
-
+			Console.WriteLine($"Минимальное значение: {u_tree.MinValue()}");
+			Console.WriteLine($"Максимальное значение: {u_tree.MaxValue()}");
+			Console.WriteLine($"Количество элементов дерева: {u_tree.Count()}");
+			Console.WriteLine($"Сумма элементов дерева: {u_tree.Sum()}");
+			Console.WriteLine($"Глубина дерева: {u_tree.Depth()}");
+			u_tree.Clear();
+			//u_tree.Print(); - нет вывода ибо дерево удалено
 
 		}
 	}
