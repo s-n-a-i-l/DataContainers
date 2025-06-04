@@ -13,7 +13,7 @@ namespace BinaryTree
 		public Element pRight { get; set; }
 		public Element(int Data, Element pLeft = null, Element pRight = null) 
 		{
-		  this.Data = Data;
+		    this.Data = Data;
 			this.pLeft = pLeft;
 			this.pRight = pRight;
 			Console.WriteLine($"EConstructor{GetHashCode()}");
