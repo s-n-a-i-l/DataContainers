@@ -6,40 +6,28 @@ using System.Threading.Tasks;
 
 namespace BinaryTree
 {
-	internal class Tree: IEnumerable <int>
+	internal class Tree
 	{
+		static readonly int BASE_INTERVAL = 3;
 		public Element Root { get; protected set; }
 		public Tree()
 		{
 			Root = null;
-			//Console.WriteLine($"TConstructor{GetHashCode()}");
+			Console.WriteLine($"TConstructor:{GetHashCode()}");
 		}
-
 		~Tree()
 		{
-			//Console.WriteLine($"TDestructor{GetHashCode()}");
+			Console.WriteLine($"TDestructor:{GetHashCode()}");
 		}
 
-		//public IEnumerator<T> GetEnumerator() 
-		//{
-		//	return Root;
-		//}
 
-		public double Avg()
+		public void Insert(int Data)
 		{
-			return (double)Sum(Root) / Count(Root);
+			Insert(Data, Root);
 		}
-		public void Insert(int data)//удалось убрать элемент из агрумента
-		{
-			if (Root == null)
-				Root = new Element(data);
-			else
-				Insert(data, Root); // приватный рекурсивный
-		}
-		private void Insert(int Data, Element Root)
+		void Insert(int Data, Element Root)
 		{
 			if (this.Root == null) this.Root = new Element(Data);
-
 			if (Root == null) return;
 			if (Data < Root.Data)
 			{
@@ -52,114 +40,173 @@ namespace BinaryTree
 				else Insert(Data, Root.pRight);
 			}
 		}
+		public void Erase(int Data)
+		{
+			Element Root = this.Root;
+			Erase(Data, Root, null);
+		}
+		void Erase(int Data, Element Root, Element Parent)
+		{
+			if (Root == null) return;
+			Erase(Data, Root.pLeft, Root);
+			Erase(Data, Root.pRight, Root);
+			if (Data == Root.Data)
+			{
+				if (Root.pLeft == Root.pRight)
+				{
+					if (Root.Equals(Parent.pLeft)) Parent.pLeft = null;
+					if (Root.Equals(Parent.pRight)) Parent.pRight = null;
+				}
+				else
+				{
+					if (Count(Root.pLeft) > Count(Root.pRight))
+					{
+						Root.Data = MaxValue(Root.pLeft);
+						Erase(MaxValue(Root.pLeft), Root.pLeft, Root);
+					}
+					else
+					{
+						Root.Data = MinValue(Root.pRight);
+						Erase(MinValue(Root.pRight), Root.pRight, Root);
+					}
+				}
+			}
+			//if(Root != null)Erase(Data, Root.pLeft);
+			//if(Root != null)Erase(Data, Root.pRight);
+		}
+		public void Balance()
+		{
+			Balance(Root);
+		}
+		void Balance(Element Root)
+		{
+			if (Root == null) return;
+			//Balance(Root.pLeft);
+			//Balance(Root.pRight);
+			if (Math.Abs(Count(Root.pLeft) - Count(Root.pRight)) < 2) return;
+			if (Count(Root.pLeft) > Count(Root.pRight))
+			{
+				if (Root.pRight == null) Root.pRight = new Element(Root.Data);
+				else Insert(Root.Data, Root.pRight);
+				Root.Data = MaxValue(Root.pLeft);
+				Erase(MaxValue(Root.pLeft), Root.pLeft, Root);
+			}
+			else
+			{
+				if (Root.pLeft == null) Root.pLeft = new Element(Root.Data);
+				else Insert(Root.Data, Root.pLeft);
+				Root.Data = MinValue(Root.pRight);
+				Erase(MinValue(Root.pRight), Root.pRight, Root);
+			}
+			Balance(Root.pLeft);
+			Balance(Root.pRight);
+			Balance(Root);
+		}
 		public int MinValue()
 		{
 			return MinValue(Root);
 		}
-		private int MinValue(Element Root)
+		int MinValue(Element Root)
 		{
 			if (Root == null) return 0;
-			return Root.pLeft == null ? Root.Data : MinValue(Root.pLeft);
+			else return Root.pLeft == null ? Root.Data : MinValue(Root.pLeft);
 			//if (Root.pLeft == null) return Root.Data;
 			//else return MinValue(Root.pLeft);
 		}
-
 		public int MaxValue()
 		{
 			return MaxValue(Root);
 		}
-
-		private int MaxValue(Element Root)
+		int MaxValue(Element Root)
 		{
 			if (Root == null) return 0;
 			else return Root.pRight == null ? Root.Data : MaxValue(Root.pRight);
 		}
-
 		public int Count()
 		{
 			return Count(Root);
 		}
-		private int Count(Element Root) 
+		int Count(Element Root)
 		{
-		  return Root == null ?0: Count(Root.pLeft) + Count(Root.pRight) + 1;
+			return Root == null ? 0 : Count(Root.pLeft) + Count(Root.pRight) + 1;
 		}
 		public int Sum()
 		{
 			return Sum(Root);
 		}
-
-		private int Sum(Element Root) 
+		int Sum(Element Root)
 		{
-		 return Root == null?0:Sum(Root.pLeft) + Sum(Root.pRight) + Root.Data;
+			return Root == null ? 0 : Sum(Root.pLeft) + Sum(Root.pRight) + Root.Data;
 		}
-
+		public double Avg()
+		{
+			return (double)Sum(Root) / Count(Root);
+		}
+		public int Depth()
+		{
+			return Depth(Root);
+		}
+		int Depth(Element Root)
+		{
+			if (Root == null) return 0;
+			int lDepth = Depth(Root.pLeft);
+			int rDepth = Depth(Root.pRight);
+			return (lDepth > rDepth ? lDepth : rDepth) + 1;
+		}
+		public void DepthPrint(int Depth)
+		{
+			DepthPrint(Root, Depth);
+			Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine();
+		}
+		void DepthPrint(Element Root, int Depth)
+		{
+			int interval = BASE_INTERVAL * (this.Depth(this.Root) - Depth);
+			if (Root == null)
+			{
+				//Console.Write("".PadLeft(interval));
+				Console.Write("".PadLeft(interval));
+				return;
+			}
+			if (Depth == 0)
+			{
+				Console.Write(Root.Data.ToString().PadLeft(interval));
+			}
+			else
+			{
+				DepthPrint(Root.pLeft, Depth - 1);
+				DepthPrint(Root.pRight, Depth - 1);
+			}
+		}
+		public void TreePrint(int Depth = 0)
+		{
+			if (Root == null) return;
+			if (this.Depth(this.Root) - Depth == 0) return;
+			int interval = BASE_INTERVAL * (this.Depth() - Depth);
+			Console.Write("".PadLeft(interval));
+			PrintInterval(this.Depth(this.Root) - Depth);
+			DepthPrint(Depth);
+			TreePrint(Depth + 1);
+		}
+		void PrintInterval(int count)
+		{
+			for (int i = 0; i < count; i++) Console.Write("    ");
+		}
 		public void Print()
 		{
 			Print(Root);
-			Console.WriteLine(); 
+			Console.WriteLine();
 		}
-		private void Print(Element Root)
+		void Print(Element Root)
 		{
-
 			if (Root == null) return;
 			Print(Root.pLeft);
 			Console.Write(Root.Data + "\t");
 			Print(Root.pRight);
 		}
 
-		public void Clear() 
-		{
-			Root = null;
-			//Console.WriteLine($"Tree has been delete.{GetHashCode()}");
-		}
 
-		public void Erase(int value)
-		{
-			Root = Erase(Root, value);
-		}
-
-		private Element Erase(Element node, int value)
-		{
-			if (node == null) return null;
-
-			if (value < node.Data)
-				node.pLeft = Erase(node.pLeft, value);
-			else if (value > node.Data)
-				node.pRight = Erase(node.pRight, value);
-			else
-			{
-				
-				if (node.pLeft == null && node.pRight == null)
-					return null;
-
-				if (node.pLeft == null)
-					return node.pRight;
-
-				if (node.pRight == null)
-					return node.pLeft;
-
-				
-				int minValue = MinValue(node.pRight);
-				node.Data = minValue;
-				node.pRight = Erase(node.pRight, minValue);
-			}
-			return node;
-		}
-
-		public int Depth()
-		{
-			return Depth(Root);
-		}
-
-		private int Depth(Element node)
-		{
-			if (node == null) return 0;
-
-			int leftDepth = Depth(node.pLeft);
-			int rightDepth = Depth(node.pRight);
-
-			return Math.Max(leftDepth, rightDepth) + 1;
-		}
 
 	}
 }

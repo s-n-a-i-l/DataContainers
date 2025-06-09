@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BinaryTree
 {
 
-	internal class Program //решила продублировать все методы, сделав основные приватными, а те что мы можем вызвать соответственно - публичными
+	internal class Program //решила продублировать все методы, сделав основные приватными, а те что мы можем вызвать соответственно - публичными(обертка)
 	{
 		static void Main(string[] args)
 		{
@@ -59,6 +59,22 @@ namespace BinaryTree
 			//u_tree.Print(); - нет вывода ибо дерево удалено  
 #endif
 			//Tree tree = new Tree() {50, 25, 75,16,32,70,80 };
+			Tree tree = new Tree();
+			tree.Insert(50);
+			tree.Insert(25);
+			tree.Insert(75);
+			tree.Insert(16);
+			tree.Insert(32);
+			tree.Insert(70);
+			tree.Insert(80);
+			//Console.WriteLine(tree.Depth());
+			tree.Print();
+			Console.WriteLine("\n---------------------------------------\n");
+
+			//tree.DepthPrint(2);
+			tree.Balance();
+			
+			tree.TreePrint();
 		}
 		public void MeasurePerformance(DateTime start,DateTime stop) 
 		{
