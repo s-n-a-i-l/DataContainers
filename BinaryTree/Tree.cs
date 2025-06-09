@@ -6,18 +6,28 @@ using System.Threading.Tasks;
 
 namespace BinaryTree
 {
-	internal class Tree
+	internal class Tree: IEnumerable <int>
 	{
 		public Element Root { get; protected set; }
 		public Tree()
 		{
 			Root = null;
-			Console.WriteLine($"TConstructor{GetHashCode()}");
+			//Console.WriteLine($"TConstructor{GetHashCode()}");
 		}
 
 		~Tree()
 		{
-			Console.WriteLine($"TDestructor{GetHashCode()}");
+			//Console.WriteLine($"TDestructor{GetHashCode()}");
+		}
+
+		//public IEnumerator<T> GetEnumerator() 
+		//{
+		//	return Root;
+		//}
+
+		public double Avg()
+		{
+			return (double)Sum(Root) / Count(Root);
 		}
 		public void Insert(int data)//удалось убрать элемент из агрумента
 		{
@@ -100,7 +110,7 @@ namespace BinaryTree
 		public void Clear() 
 		{
 			Root = null;
-			Console.WriteLine($"Tree has been delete.{GetHashCode()}");
+			//Console.WriteLine($"Tree has been delete.{GetHashCode()}");
 		}
 
 		public void Erase(int value)
